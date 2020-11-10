@@ -1,12 +1,27 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class main {
 
-
+/*
+String[] strArr = new String[]{
+                "R",
+                "(x,x,x,x,x,x,x)",
+                "(x,x,x,x,x,x,x)",
+                "(x,x,x,x,x,x,x)",
+                "(x,x,x,R,x,x,x)",
+                "(x,x,x,R,x,x,x)",
+                "(x,x,x,R,Y,Y,Y)"
+        };
+ */
     public static class Piece{
 
+        public  void dropPiece(){
+            while ( this.y+1 < 6 && connectBoard[this.x][this.y+1] == 'x' ){
+                this.y++;
+            }
 
-
+        }
         public int getX() {
             return x;
         }
@@ -35,6 +50,17 @@ public class main {
         private int x;
         private int y;
 
+        public char getValue() {
+            return value;
+        }
+
+        public void setValue(char value) {
+            this.value = value;
+        }
+
+        private char value;
+
+
     }
     public static char[][] toCharArr (String[] strArr){
         char[][] charArr = new char[6][7];
@@ -51,11 +77,11 @@ public class main {
 
         return charArr;
     }
-
+    public static char[][] connectBoard;
     public static void main(String[] args){
         String[] strArr = new String[]{
                 "R",
-                "(x,x,x,x,x,x,x)",
+                "(x,x,R,x,x,x,x)",
                 "(x,x,x,x,x,x,x)",
                 "(x,x,x,x,x,x,x)",
                 "(x,x,x,R,x,x,x)",
@@ -63,15 +89,22 @@ public class main {
                 "(x,x,x,R,Y,Y,Y)"
         };
 
-        char[] test_row = toCharArr(strArr)[0];
+        connectBoard = toCharArr(strArr);
 
-        System.out.println(Arrays.toString(test_row));
+        ArrayList<Piece> possibleStarts = new ArrayList<>();
 
+        for ( int i =0; i < 6; i++){
+            if ( connectBoard[0][i] == 'x'){
+                Piece possible_start = new Piece();
+                possible_start.setValue(strArr[0].charAt(0));
+                possible_start.setX(0);
+                possible_start.setY(i);
+                possible_start.dropPiece();
+                possibleStarts.add(possible_start);
+            }
+        }
 
-
-
-
-
+        System.out.println(possibleStarts.size());
 
     }
 }
