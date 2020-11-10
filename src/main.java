@@ -3,61 +3,66 @@ import java.util.Arrays;
 
 public class main {
 
-/*
-String[] strArr = new String[]{
-                "R",
-                "(x,x,x,x,x,x,x)",
-                "(x,x,x,x,x,x,x)",
-                "(x,x,x,x,x,x,x)",
-                "(x,x,x,R,x,x,x)",
-                "(x,x,x,R,x,x,x)",
-                "(x,x,x,R,Y,Y,Y)"
-        };
- */
+
     public static class Piece{
 
         public  void dropPiece(){
-            while ( this.y+1 < 6 && connectBoard[this.x][this.y+1] == 'x' ){
-                this.y++;
+            while ( this.x+1 < 6 && connectBoard[this.x+1][this.y] == 'x' ){
+                this.x++;
             }
 
         }
         public boolean isWinner(){
 
             boolean isGood = true;
-            if ( this.x+4 < 6 ){
-                for ( int i = this.x+1; i < this.x+4; i++){
-                    if ( connectBoard[i][this.y] != this.getValue() ){
-                        isGood = false;
+            if ( this.x+4 <= 6 ){
+                int count = 0;
+                for ( int i = this.x; i < this.x+4; i++){
+                    if ( connectBoard[i][this.y] == this.getValue() ){
+                        count++;
                     }
                 }
-            }
-            if ( this.x-4 > -1 ){
-                for ( int i = this.x-1; i > this.x-4; i--){
-                    if ( connectBoard[i][this.y] != this.getValue() ){
-                        isGood = false;
-                    }
-
+                if ( count == 4){
+                    return true;
                 }
             }
-            if ( this.y+4 < 7 ){
-                for ( int i = this.y+1; i < this.y+4; i++ ){
-                    if ( connectBoard[this.x][i] != this.getValue() ){
-                        isGood = false;
+            if ( this.x-4 >= -1 ){
+                int count =0;
+                for ( int i = this.x; i > this.x-4; i--){
+                    if ( connectBoard[i][this.y] == this.getValue() ){
+                        count++;
                     }
                 }
-            }
-            if ( this.y-3 > -1 ){
-
-                for ( int i = this.y-1; i > this.y-3; i++ ){
-                    if ( connectBoard[this.x][i] != this.getValue() ){
-                        isGood = false;
-                    }
+                if ( count == 4 ){
+                    return true;
                 }
 
             }
+            if ( this.y+4 <= 7 ){
+                int count = 0;
+                for ( int i = this.y; i < this.y+4; i++ ){
+                    if ( connectBoard[this.x][i] == this.getValue() ){
+                       count ++;
+                    }
+                }
+                if ( count == 4 ){
+                    return true;
+                }
+            }
+            if ( this.y-4 >= -1 ){
+                int count = 0;
+                for ( int i = this.y; i > this.y-3; i-- ){
+                    if ( connectBoard[this.x][i] == this.getValue() ){
+                        count++;
+                    }
+                }
+                if ( count == 4 ){
+                    return  true;
+                }
 
-            return isGood;
+            }
+
+            return false;
         }
         public int getX() {
             return x;
@@ -110,28 +115,37 @@ String[] strArr = new String[]{
     public static char[][] connectBoard;
     public static void main(String[] args){
         String[] strArr = new String[]{
-                "R",
+                "Y",
                 "(x,x,x,x,x,x,x)",
                 "(x,x,x,x,x,x,x)",
                 "(x,x,x,x,x,x,x)",
-                "(x,x,x,R,x,x,x)",
-                "(x,x,x,R,x,x,x)",
+                "(x,x,x,x,x,x,x)",
+                "(x,x,x,x,x,x,x)",
                 "(x,x,x,R,Y,Y,Y)"
         };
 
         connectBoard = toCharArr(strArr);
 
 
-        for ( int i =0; i < 6; i++){
+
+        Piece winningPiece = null;
+
+        for ( int i =0; i < 7; i++){
             if ( connectBoard[0][i] == 'x'){
                 Piece possible_start = new Piece();
                 possible_start.setValue(strArr[0].charAt(0));
                 possible_start.setX(0);
                 possible_start.setY(i);
                 possible_start.dropPiece();
+                connectBoard[possible_start.getX()][possible_start.getY()] = possible_start.getValue();
 
+                if ( i == 3 ){
+                    winningPiece = possible_start;
+                }
             }
         }
+
+        System.out.println(winningPiece.isWinner());
 
 
     }
