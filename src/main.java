@@ -22,6 +22,43 @@ String[] strArr = new String[]{
             }
 
         }
+        public boolean isWinner(){
+
+            boolean isGood = true;
+            if ( this.x+4 < 6 ){
+                for ( int i = this.x+1; i < this.x+4; i++){
+                    if ( connectBoard[i][this.y] != this.getValue() ){
+                        isGood = false;
+                    }
+                }
+            }
+            if ( this.x-4 > -1 ){
+                for ( int i = this.x-1; i > this.x-4; i--){
+                    if ( connectBoard[i][this.y] != this.getValue() ){
+                        isGood = false;
+                    }
+
+                }
+            }
+            if ( this.y+4 < 7 ){
+                for ( int i = this.y+1; i < this.y+4; i++ ){
+                    if ( connectBoard[this.x][i] != this.getValue() ){
+                        isGood = false;
+                    }
+                }
+            }
+            if ( this.y-3 > -1 ){
+
+                for ( int i = this.y-1; i > this.y-3; i++ ){
+                    if ( connectBoard[this.x][i] != this.getValue() ){
+                        isGood = false;
+                    }
+                }
+
+            }
+
+            return isGood;
+        }
         public int getX() {
             return x;
         }
@@ -38,15 +75,8 @@ String[] strArr = new String[]{
             this.y = y;
         }
 
-        public Piece getParent() {
-            return parent;
-        }
 
-        public void setParent(Piece parent) {
-            this.parent = parent;
-        }
 
-        private Piece parent;
         private int x;
         private int y;
 
@@ -81,7 +111,7 @@ String[] strArr = new String[]{
     public static void main(String[] args){
         String[] strArr = new String[]{
                 "R",
-                "(x,x,R,x,x,x,x)",
+                "(x,x,x,x,x,x,x)",
                 "(x,x,x,x,x,x,x)",
                 "(x,x,x,x,x,x,x)",
                 "(x,x,x,R,x,x,x)",
@@ -91,7 +121,6 @@ String[] strArr = new String[]{
 
         connectBoard = toCharArr(strArr);
 
-        ArrayList<Piece> possibleStarts = new ArrayList<>();
 
         for ( int i =0; i < 6; i++){
             if ( connectBoard[0][i] == 'x'){
@@ -100,11 +129,10 @@ String[] strArr = new String[]{
                 possible_start.setX(0);
                 possible_start.setY(i);
                 possible_start.dropPiece();
-                possibleStarts.add(possible_start);
+
             }
         }
 
-        System.out.println(possibleStarts.size());
 
     }
 }
